@@ -1,0 +1,108 @@
+{
+  "name": "command-to-quickfix",
+  "displayName": "Command to Quick Fix",
+  "description": "Show any VS Code command as a Quick Fix (Ctrl+.) code action",
+  "version": "0.1.0",
+  "publisher": "ddhq",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiiddqd/ddhq.git",
+    "directory": "includes/command-to-quickfix"
+  },
+  "bugs": {
+    "url": "https://github.com/aiiddqd/ddhq/issues"
+  },
+  "homepage": "https://github.com/aiiddqd/ddhq/tree/main/includes/command-to-quickfix",
+  "keywords": [
+    "vscode",
+    "quickfix",
+    "code-actions",
+    "ai-agents",
+    "copilot",
+    "cursor",
+    "commands"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Command to Quick Fix",
+      "properties": {
+        "commandToQuickFix.actions": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "Commands to show as Quick Fix code actions. Each entry: `command` (required), `title` (defaults to command id), `when` (`always` | `editorHasSelection` | `!editorHasSelection` | `editorLangId == <id>`), `kind` (`quickfix` | `refactor` | `source`), `order` (lower = higher in the list).",
+          "items": {
+            "type": "object",
+            "required": [
+              "command"
+            ],
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "Command id to execute, e.g. `kimi.insertMention`"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title shown in the Quick Fix menu"
+              },
+              "when": {
+                "type": "string",
+                "default": "always",
+                "description": "Show condition: always | editorHasSelection | !editorHasSelection | editorLangId == <id>"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "quickfix",
+                  "refactor",
+                  "source"
+                ],
+                "default": "quickfix"
+              },
+              "order": {
+                "type": "number",
+                "default": 0,
+                "description": "Sort order of own entries (lower = higher)"
+              }
+            }
+          }
+        },
+        "commandToQuickFix.showWhenNoSelection": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Show entries without an explicit `when` when there is no selection."
+        },
+        "commandToQuickFix.preferredKind": {
+          "type": "string",
+          "enum": [
+            "quickfix",
+            "refactor",
+            "source"
+          ],
+          "default": "quickfix",
+          "description": "Default CodeAction kind for entries without an explicit kind."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test \"out/test/*.test.js\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}
